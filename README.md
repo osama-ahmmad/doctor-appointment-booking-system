@@ -66,7 +66,7 @@ A lightweight, working Java application is implemented in [`src/`](src/) followi
    ```bash
    java src/Main.java
    ```
-   This automatically verifies all requirements in sequence:
+   This verifies the implemented functional requirements in sequence:
    - **R1 (UC1)**: Queries and displays doctor availability.
    - **R2 (UC2)**: Books 3 upcoming appointments successfully.
    - **R4**: Verifies that booking a 4th upcoming appointment is rejected (limit $N = 3$).
@@ -74,6 +74,8 @@ A lightweight, working Java application is implemented in [`src/`](src/) followi
    - **R3 & R4 (UC4)**: Doctor declines an appointment request, freeing the slot and decrementing the active limit count.
    - **R4 Verification**: Patient successfully books again after a slot is freed.
    - **R2 Double-booking protection**: Rejects booking an already booked slot.
+
+   R5 (access control), R6 (response time), and R7 (mobile usability) are not implemented or measured by this console application; they remain proposals described above.
 
 2. **Run Interactive CLI Mode**:
    ```bash

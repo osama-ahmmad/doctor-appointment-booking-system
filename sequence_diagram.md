@@ -10,25 +10,28 @@ sequenceDiagram
 
     %% R1: View Availability
     note over Patient, Slot: R1: View Doctor Availability
-    Patient->>Slot: viewAvailability(doctorId)
+    Patient->>Patient: viewAvailability(doctor)
+    Patient->>Slot: getAvailability()
     activate Slot
     Slot-->>Patient: return available slots
     deactivate Slot
 
     %% R2 & R4: Book Appointment with N Limit Check
     note over Patient, Appt: R2 & R4: Book Appointment (N Limit Check)
-    Patient->>Appt: bookAppointment(slotId)
+    Patient->>Patient: bookAppointment(doctor, slot, appointmentId)
     activate Appt
-    
-    Appt->>Appt: isUpcoming()
-    note over Appt: Count active (PENDING + ACCEPTED) appointments
-    
+
+    Patient->>Patient: countUpcomingAppointments()
+    Patient->>Appt: countsTowardLimit()
+    note over Patient, Appt: Count future PENDING and ACCEPTED appointments
+
     alt Upcoming Count < N
-        Appt->>Slot: isAvailable()
+        Patient->>Slot: isAvailable()
         activate Slot
-        Slot-->>Appt: true
+        Slot-->>Patient: true
         deactivate Slot
-        Appt->>Appt: submit() [status = PENDING]
+        Patient->>Appt: submit() [status = PENDING]
+        Patient->>Slot: setAvailable(false)
         Appt-->>Patient: Appointment Submitted (PENDING)
     else Upcoming Count >= N
         Appt-->>Patient: Booking Failed (Maximum N active appointments reached)
@@ -37,7 +40,7 @@ sequenceDiagram
 
     %% R3: Doctor Accept / Decline
     note over Doctor, Appt: R3: Doctor Accept or Decline
-    
+
     alt Doctor Accepts
         Doctor->>Appt: acceptAppointment(appointmentId)
         activate Appt
