@@ -4,8 +4,9 @@ classDiagram
         +patientId: String
         +name: String
         +contactInfo: String
-        +viewAvailability(doctorId): AvailabilitySlot[]
-        +bookAppointment(slotId): Appointment
+        +viewAvailability(doctor): AvailabilitySlot[]
+        +bookAppointment(doctor, slot, appointmentId): Appointment
+        +countUpcomingAppointments(): int
     }
 
     class Doctor {
@@ -27,12 +28,16 @@ classDiagram
 
     class Appointment {
         +appointmentId: String
+        +patientId: String
+        +doctorId: String
+        +slot: AvailabilitySlot
         +status: AppointmentStatus
         +createdAt: DateTime
         +submit(): void
         +accept(): void
         +decline(): void
         +isUpcoming(): boolean
+        +countsTowardLimit(): boolean
     }
 
     class AppointmentStatus {
@@ -45,6 +50,6 @@ classDiagram
     Patient "1" --> "0..*" Appointment : books
     Doctor "1" --> "0..*" Appointment : receives
     Doctor "1" --> "1..*" AvailabilitySlot : offers
-    Appointment "1" --> "0..1" AvailabilitySlot : reservedFor
+    Appointment "1" --> "1" AvailabilitySlot : reservedFor
     Appointment "1" --> "1" AppointmentStatus : has
     ```
