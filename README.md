@@ -91,8 +91,9 @@ A lightweight, working Java application is implemented in [`src/`](src/) followi
 
 ## Team
 
-Team member details and contribution links were not provided in the repository.
-
-| Student ID | Full name | Assigned task | Branch | PR link |
-|---|---|---|---|---|
-| Not provided | Not provided | Not provided | Not provided | Not provided |
+| Student ID | Full name |
+|---|---|
+| 20240075 | Osama Ahmed Gomaa |
+| 20240018 | Ahmed Bahaa El-Dein |
+| 20240516 | Mohamed Abdelmaqsoud Mansour |
+| 20242187 | Shimaa Ahmed Aboelela |
