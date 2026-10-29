@@ -27,13 +27,15 @@ Only appointments that are both **future** and **Pending** or **Accepted** count
 - [Requirements](requirements.md)
 - [Use cases](use_cases.md)
 - [Use-case diagram](use_case_diagram.md)
+- [Class diagram](class_diagram.md)
+- [Sequence diagram](sequence_diagram.md)
 
 ## Development stages
 
 1. **Use Cases & Requirements** — Completed in `requirements.md`, `use_cases.md`, and `use_case_diagram.md`.
-2. **Class Diagram** — Pending; no class diagram file is currently present.
-3. **Sequence Diagram** — Pending; no sequence diagram file is currently present.
-4. **Implementation** — Pending; no implementation source code is currently present.
+2. **Class Diagram** — Completed in `class_diagram.md`.
+3. **Sequence Diagram** — Completed in `sequence_diagram.md`.
+4. **Implementation** — Completed in `src/`.
 
 ## Proposed approaches for non-functional requirements
 
@@ -45,7 +47,45 @@ These are proposals only and are not implemented in the current repository:
 
 ## Implementation and running
 
-Implementation and run instructions are **pending** because no application source code or dependency configuration is currently included.
+A lightweight, working Java application is implemented in [`src/`](src/) following the domain model and sequence diagrams:
+
+- `src/AppointmentStatus.java`: Status enum (`PENDING`, `ACCEPTED`, `DECLINED`).
+- `src/AvailabilitySlot.java`: Doctor bookable time windows (`isAvailable()`, date, start/end time).
+- `src/Appointment.java`: Appointment entity (`submit()`, `accept()`, `decline()`, `isUpcoming()`, `countsTowardLimit()`).
+- `src/Doctor.java`: Doctor entity (`getAvailability()`, `acceptAppointment()`, `declineAppointment()`).
+- `src/Patient.java`: Patient entity (`viewAvailability()`, `bookAppointment()`, $N = 3$ upcoming limit enforcement).
+- `src/Main.java`: Verification demo and interactive CLI menu.
+
+### Prerequisites
+
+- Java 11 or newer (Java 21+ recommended).
+
+### Running the Application
+
+1. **Run Automated Verification Demo (Self-test)**:
+   ```bash
+   java src/Main.java
+   ```
+   This automatically verifies all requirements in sequence:
+   - **R1 (UC1)**: Queries and displays doctor availability.
+   - **R2 (UC2)**: Books 3 upcoming appointments successfully.
+   - **R4**: Verifies that booking a 4th upcoming appointment is rejected (limit $N = 3$).
+   - **R3 (UC3)**: Doctor accepts an appointment request.
+   - **R3 & R4 (UC4)**: Doctor declines an appointment request, freeing the slot and decrementing the active limit count.
+   - **R4 Verification**: Patient successfully books again after a slot is freed.
+   - **R2 Double-booking protection**: Rejects booking an already booked slot.
+
+2. **Run Interactive CLI Mode**:
+   ```bash
+   java src/Main.java -i
+   ```
+   Provides a text menu to view availability, book appointments, accept/decline requests, and review active appointments.
+
+3. **Alternative Compilation (using `javac` if preferred)**:
+   ```bash
+   javac -d bin src/*.java
+   java -cp bin Main
+   ```
 
 ## Team
 
